@@ -14,7 +14,6 @@ interface SavedMessage {
 type VoiceModeProps = {
   voiceStatus: VoiceStatus;
   setVoiceStatus: (status: VoiceStatus) => void;
-  messages: Message[];
   onSendMessage: (content: string) => void;
   onSwitchToChat: () => void;
 };
@@ -29,15 +28,12 @@ enum CallStatus {
 export function VoiceMode({
   voiceStatus,
   setVoiceStatus,
-  // messages,
   onSwitchToChat,
 }: VoiceModeProps) {
   const [callStatus, setCallStatus] = useState(CallStatus.INACTIVE);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
-
-  console.log("FR: messages", messages);
 
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
@@ -110,125 +106,114 @@ export function VoiceMode({
   };
 
   return (
-    <div className="flex flex-col h-full items-center justify-between py-8 px-4">
-      {/* Riley Avatar */}
-      <div className="flex flex-col items-center gap-3">
-        <div className="relative">
-          <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
-            <Heart className="w-12 h-12 text-primary" />
+    <div className="flex flex-col h-full py-8 px-4 gap-6">
+      {/* Grid layout for voice section and messages */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 overflow-hidden">
+        {/* Voice Section - Left */}
+        <div className="flex flex-col items-center justify-center gap-8 p-6 rounded-2xl border-2 border-border bg-card/50">
+          <div className="flex flex-col items-center gap-3">
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full bg-primary/20 flex items-center justify-center ring-4 ring-primary/10">
+                <Heart className="w-16 h-16 text-primary" />
+              </div>
+              {voiceStatus === "speaking" && (
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                  Speaking
+                </span>
+              )}
+            </div>
+            <h2 className="text-2xl font-semibold text-foreground">Riley</h2>
+            <p className="text-sm text-muted-foreground text-center max-w-xs">
+              Your friendly medical appointment assistant
+            </p>
           </div>
-          {voiceStatus === "speaking" && (
-            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-              Speaking
-            </span>
-          )}
+
+          <div className="flex flex-col items-center gap-6">
+            <button
+              onClick={toggleMicrophone}
+              disabled={callStatus !== CallStatus.ACTIVE}
+              className={cn(
+                "relative w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg",
+                voiceStatus === "listening"
+                  ? "bg-primary text-primary-foreground scale-110 shadow-primary/50"
+                  : voiceStatus === "processing"
+                  ? "bg-accent text-accent-foreground"
+                  : voiceStatus === "speaking"
+                  ? "bg-primary/20 text-primary ring-4 ring-primary/20"
+                  : "bg-primary text-primary-foreground hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
+            >
+              {isMuted ? (
+                <MicOff className="w-12 h-12" />
+              ) : (
+                <Mic className="w-12 h-12" />
+              )}
+            </button>
+            <p className="text-base font-medium text-muted-foreground">
+              {getStatusText()}
+            </p>
+          </div>
         </div>
-        <h2 className="text-xl font-semibold text-foreground">Riley</h2>
-        <p className="text-sm text-muted-foreground text-center max-w-xs">
-          Your friendly medical appointment assistant
-        </p>
+
+        {/* Message Section - Right */}
+        <div className="flex flex-col h-full rounded-2xl border-2 border-border bg-card/50 overflow-hidden">
+          <div className="px-4 py-3 border-b border-border bg-muted/30">
+            <h3 className="text-sm font-semibold text-foreground">
+              Conversation Transcript
+            </h3>
+          </div>
+          <div className="flex-1 overflow-hidden p-4">
+            <div className="h-full overflow-y-auto space-y-3 no-scrollbar">
+              {messages.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  Start the call to see the conversation transcript here...
+                </p>
+              ) : (
+                [...messages].reverse().map((message, index) => {
+                  if (message.role === "assistant") {
+                    return (
+                      <div key={index} className="flex gap-2">
+                        <span className="text-sm font-semibold text-primary">
+                          Dr:
+                        </span>
+                        <p className="text-sm text-foreground flex-1">
+                          {message.content}
+                        </p>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div key={index} className="flex gap-2">
+                        <span className="text-sm font-semibold text-primary">
+                          You:
+                        </span>
+                        <p className="text-sm text-foreground flex-1">
+                          {message.content}
+                        </p>
+                      </div>
+                    );
+                  }
+                })
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Mic Button */}
-      <div className="flex flex-col items-center gap-6">
-        <button
-          onClick={toggleMicrophone}
-          disabled={callStatus !== CallStatus.ACTIVE}
-          className={cn(
-            "relative w-28 h-28 rounded-full flex items-center justify-center transition-all duration-300",
-            voiceStatus === "listening"
-              ? "bg-primary text-primary-foreground scale-110"
-              : voiceStatus === "processing"
-              ? "bg-accent text-accent-foreground"
-              : voiceStatus === "speaking"
-              ? "bg-primary/20 text-primary"
-              : "bg-primary text-primary-foreground hover:scale-105"
-          )}
+      {/* Buttons Section - Bottom */}
+      <div className="flex flex-col gap-3 w-full max-w-md mx-auto">
+        <Button
+          className="w-full"
+          onClick={
+            callStatus === CallStatus.ACTIVE ? handleDisconnect : handleCall
+          }
         >
-          {/* Pulse rings for listening state
-          {voiceStatus === "listening" && (
-            <>
-              <span className="absolute inset-0 rounded-full bg-primary animate-pulse-ring" />
-              <span
-                className="absolute inset-0 rounded-full bg-primary animate-pulse-ring"
-                style={{ animationDelay: "0.5s" }}
-              />
-            </>
-          )}
-
-          {voiceStatus === "processing" ? (
-            <Loader2 className="w-10 h-10 animate-spin" />
-          ) : voiceStatus === "speaking" ? (
-            <Waveform />
-          ) : voiceStatus === "listening" ? (
-            <MicOff className="w-10 h-10" />
-          ) : (
-            <Mic className="w-10 h-10" />
-          )} */}
-          {isMuted ? (
-            <MicOff className="w-10 h-10" />
-          ) : (
-            <Mic className="w-10 h-10" />
-          )}
-        </button>
-        <p className="text-sm font-medium text-muted-foreground">
-          {getStatusText()}
-        </p>
-      </div>
-      <Button
-        onClick={
-          callStatus === CallStatus.ACTIVE ? handleDisconnect : handleCall
-        }
-      >
-        {callStatus === CallStatus.CONNECTING
-          ? "Connecting..."
-          : callStatus === CallStatus.ACTIVE
-          ? "End Call"
-          : "Start Call"}
-      </Button>
-
-      {/* Transcript */}
-      <div className="w-full max-w-sm space-y-3">
-        {/* <div className="bg-card border border-border rounded-xl p-4 min-h-[120px]">
-          <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">
-            Live Transcript
-          </p>
-          <div className="space-y-2 text-sm">
-            {lastUserMessage && (
-              <p className="text-foreground">
-                <span className="font-medium text-muted-foreground">You:</span>{" "}
-                {lastUserMessage.content}
-              </p>
-            )}
-            {lastAssistantMessage && (
-              <p className="text-foreground">
-                <span className="font-medium text-primary">Riley:</span>{" "}
-                {lastAssistantMessage.content}
-              </p>
-            )}
-          </div>
-        </div> */}
-        <section className="transcript">
-          <div className="transcript-message no-scrollbar">
-            {messages.map((message, index) => {
-              if (message.role === "assistant") {
-                return (
-                  <p key={index} className="max-sm:text-sm">
-                    Dr:
-                    {message.content}
-                  </p>
-                );
-              } else {
-                return (
-                  <p key={index} className="text-primary max-sm:text-sm">
-                    fikri: {message.content}
-                  </p>
-                );
-              }
-            })}
-          </div>
-          <div className="transcript-fade" />
-        </section>
+          {callStatus === CallStatus.CONNECTING
+            ? "Connecting..."
+            : callStatus === CallStatus.ACTIVE
+            ? "End Call"
+            : "Start Call"}
+        </Button>
 
         <Button
           variant="outline"

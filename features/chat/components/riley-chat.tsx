@@ -119,7 +119,6 @@ export function RileyChat() {
       <div className="flex-1 overflow-hidden">
         {mode === "chat" ? (
           <ChatMode
-            messages={messages}
             appointment={appointment}
             onSendMessage={handleSendMessage}
             onQuickAction={handleQuickAction}
@@ -129,7 +128,6 @@ export function RileyChat() {
           <VoiceMode
             voiceStatus={voiceStatus}
             setVoiceStatus={setVoiceStatus}
-            messages={messages}
             onSendMessage={handleSendMessage}
             onSwitchToChat={() => setMode("chat")}
           />
