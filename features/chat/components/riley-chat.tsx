@@ -43,7 +43,6 @@ export function RileyChat({
   ]);
   const [appointment, setAppointment] = useState<Appointment | null>(null);
   const [voiceStatus, setVoiceStatus] = useState<VoiceStatus>("idle");
-  console.log("FR: initialMessages:", initialMessages);
 
   const handleSendMessage = (content: string) => {
     const userMessage: Message = {
