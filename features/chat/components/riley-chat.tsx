@@ -5,6 +5,7 @@ import { ChatMode } from "./chat-mode";
 import { VoiceMode } from "./voice-mode";
 import { ModeToggle } from "./mode-toggle";
 import { RileyHeader } from "./riley-header";
+import { UIMessage } from "ai";
 
 export type Message = {
   id: string;
@@ -23,7 +24,13 @@ export type Appointment = {
   department: string;
 };
 
-export function RileyChat() {
+export function RileyChat({
+  id,
+  initialMessages,
+}: {
+  id?: string;
+  initialMessages?: UIMessage[];
+}) {
   const [mode, setMode] = useState<"chat" | "voice">("chat");
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -36,6 +43,7 @@ export function RileyChat() {
   ]);
   const [appointment, setAppointment] = useState<Appointment | null>(null);
   const [voiceStatus, setVoiceStatus] = useState<VoiceStatus>("idle");
+  console.log("FR: initialMessages:", initialMessages);
 
   const handleSendMessage = (content: string) => {
     const userMessage: Message = {
@@ -119,6 +127,8 @@ export function RileyChat() {
       <div className="flex-1 overflow-hidden">
         {mode === "chat" ? (
           <ChatMode
+            initialMessages={initialMessages}
+            id={id}
             appointment={appointment}
             onSendMessage={handleSendMessage}
             onQuickAction={handleQuickAction}

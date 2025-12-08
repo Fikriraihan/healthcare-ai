@@ -31,7 +31,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
             : "bg-primary text-primary-foreground rounded-br-md"
         )}
       >
-        {message.parts.map((part, i) => {
+        {message?.parts?.map((part, i) => {
           switch (part.type) {
             case "text":
               return <div key={`${message.id}-${i}`}>{part.text}</div>;

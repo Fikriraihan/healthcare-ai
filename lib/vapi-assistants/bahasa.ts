@@ -1,12 +1,4 @@
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-import {
-  language,
-  VoiceLanguage,
-} from "@/features/chat/components/switch-language";
-import { bahasaAssistant } from "./vapi-assistants/bahasa";
-import { englishUSAssistant } from "./vapi-assistants/english-us";
 
 const SYSTEM_PROMPT = `
 Identitas & Peran
@@ -92,16 +84,35 @@ Berikan jadwal baru, konfirmasi, lalu ucapkan:
 “Baik, janji lama sudah saya batalkan dan diganti dengan jadwal baru pada [waktu baru].”
 `;
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export const configureAssistant = ({
-  language = "id-ID",
-}: {
-  language: language;
-}) => {
-  const vapiAssistant: CreateAssistantDTO =
-    language === "id-ID" ? bahasaAssistant : englishUSAssistant;
-  return vapiAssistant;
+export const bahasaAssistant: CreateAssistantDTO = {
+  name: "Riley",
+  firstMessage: "Hai! Ada yang bisa saya bantu?",
+  transcriber: {
+    provider: "11labs",
+    language: "id",
+    model: "scribe_v1",
+  },
+  // backgroundSound:
+  voice: {
+    provider: "11labs",
+    voiceId: "I7sakys8pBZ1Z5f0UhT9",
+    language: "id",
+    useSpeakerBoost: true,
+    model: "eleven_turbo_v2_5",
+    similarityBoost: 0.8,
+    speed: 0.9,
+    style: 0.5,
+  },
+  model: {
+    provider: "openai",
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content: SYSTEM_PROMPT,
+      },
+    ],
+  },
+  clientMessages: undefined,
+  serverMessages: undefined,
 };

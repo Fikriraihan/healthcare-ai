@@ -1,11 +1,26 @@
 "use client";
 
-import { Heart, MessageSquare, Mic, MicOff, Loader2 } from "lucide-react";
+import {
+  Heart,
+  MessageSquare,
+  Mic,
+  MicOff,
+  Loader2,
+  Globe,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn, configureAssistant } from "@/lib/utils";
 import type { VoiceStatus } from "./riley-chat";
 import { useEffect, useState } from "react";
 import { vapi } from "@/lib/vapi.sdk";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { language, VoiceLanguageSwitch } from "./switch-language";
 
 interface SavedMessage {
   role: "user" | "system" | "assistant";
@@ -34,6 +49,7 @@ export function VoiceMode({
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
+  const [language, setLanguage] = useState<language>("en-US");
 
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
@@ -97,7 +113,7 @@ export function VoiceMode({
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
 
-    vapi.start(configureAssistant());
+    vapi.start(configureAssistant({ language: language }));
   };
 
   const handleDisconnect = () => {
@@ -201,9 +217,31 @@ export function VoiceMode({
       </div>
 
       {/* Buttons Section - Bottom */}
-      <div className="flex flex-col gap-3 w-full max-w-md mx-auto">
+      <div className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl mx-auto">
+        {/* <Select value={language} onValueChange={setLanguage}>
+          <SelectTrigger className="w-full sm:w-48">
+            <Globe className="w-4 h-4 mr-2" />
+            <SelectValue placeholder="Select language" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="en">English</SelectItem>
+            <SelectItem value="id">Bahasa Indonesia</SelectItem>
+            <SelectItem value="es">Español</SelectItem>
+            <SelectItem value="fr">Français</SelectItem>
+            <SelectItem value="de">Deutsch</SelectItem>
+            <SelectItem value="ja">日本語</SelectItem>
+            <SelectItem value="ko">한국어</SelectItem>
+            <SelectItem value="zh">中文</SelectItem>
+          </SelectContent>
+        </Select> */}
+        <VoiceLanguageSwitch
+          onLanguageChange={(value) => {
+            setLanguage(value.code);
+          }}
+        />
+
         <Button
-          className="w-full"
+          className="w-full flex-1"
           onClick={
             callStatus === CallStatus.ACTIVE ? handleDisconnect : handleCall
           }
@@ -215,14 +253,14 @@ export function VoiceMode({
             : "Start Call"}
         </Button>
 
-        <Button
+        {/* <Button
           variant="outline"
           onClick={onSwitchToChat}
           className="w-full bg-transparent"
         >
           <MessageSquare className="w-4 h-4 mr-2" />
           Switch to Text Mode
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

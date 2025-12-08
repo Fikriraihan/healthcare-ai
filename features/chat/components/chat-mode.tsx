@@ -6,13 +6,15 @@ import { ChatMessage } from "./chat-message";
 import { ChatInput } from "./chat-input";
 import { QuickActions } from "./quick-actions";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import { createIdGenerator, DefaultChatTransport, UIMessage } from "ai";
 
 type ChatModeProps = {
   appointment: Appointment | null;
   onSendMessage: (content: string) => void;
   onQuickAction: (action: string) => void;
   onSwitchToVoice: () => void;
+  id?: string;
+  initialMessages?: UIMessage[];
 };
 
 export function ChatMode({
@@ -20,30 +22,43 @@ export function ChatMode({
   onSendMessage,
   onQuickAction,
   onSwitchToVoice,
+  id,
+  initialMessages = [],
 }: ChatModeProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
-  const [conversationId, setConversationId] = useState(() =>
-    crypto.randomUUID()
-  );
+
   const { messages, sendMessage } = useChat({
+    id: id,
+    messages: initialMessages,
     transport: new DefaultChatTransport({
       api: "/api/chat",
-      body: {
-        conversationId,
+      prepareSendMessagesRequest({ messages, id }) {
+        return {
+          body: {
+            message: messages[messages.length - 1],
+            id: id,
+          },
+        };
       },
     }),
-    onFinish: async (message) => {
-      console.log("FR: message finished", message);
-    },
+    generateId: createIdGenerator({
+      prefix: id,
+      size: 16,
+      separator: "-",
+    }),
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendMessage({ text: input, conversationId });
+    if (!input.trim()) return;
+
+    sendMessage({
+      role: "user",
+      parts: [{ type: "text", text: input }],
+    });
     setInput("");
   };
-  const lastMessageIsUser = messages[messages.length - 1]?.role === "user";
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -57,9 +72,9 @@ export function ChatMode({
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scroll-smooth"
       >
-        {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} />
-        ))}
+        {messages.map((message) => {
+          return <ChatMessage key={message.id} message={message} />;
+        })}
 
         {/* {lastMessageIsUser && <TypingIndicator />}
         {appointment && <AppointmentCard appointment={appointment} />} */}
