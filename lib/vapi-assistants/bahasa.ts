@@ -116,4 +116,5 @@ export const bahasaAssistant: CreateAssistantDTO = {
   },
   clientMessages: undefined,
   serverMessages: undefined,
+  maxDurationSeconds: 180,
 };

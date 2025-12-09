@@ -150,6 +150,7 @@ export const englishUSAssistant: CreateAssistantDTO = {
     waitSeconds: 0.4,
     smartEndpointingEnabled: "livekit",
   },
+  maxDurationSeconds: 180,
   // isServerUrlSecretSet: false,
 };
 
