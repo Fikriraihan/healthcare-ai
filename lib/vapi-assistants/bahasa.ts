@@ -87,7 +87,7 @@ Berikan jadwal baru, konfirmasi, lalu ucapkan:
 export const bahasaAssistant: CreateAssistantDTO = {
   backgroundSound: "office",
   name: "Riley",
-  firstMessage: "Hai! Ada yang bisa saya bantu?",
+  firstMessage: "Haloo! Ada yang bisa saya bantu bapak ibu?",
   transcriber: {
     provider: "11labs",
     language: "id",

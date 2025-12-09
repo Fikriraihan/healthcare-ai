@@ -20,7 +20,7 @@ const AIChat = async (props: { params: Promise<{ id: string }> }) => {
   });
 
   return (
-    <section>
+    <section className="h-full">
       <RileyChat id={id} initialMessages={messages} />
     </section>
   );

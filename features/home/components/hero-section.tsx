@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { ArrowRight, Play } from "lucide-react";
 import Link from "next/link";
 
@@ -35,16 +36,30 @@ export function HeroSection() {
                 Book an Appointment
                 <ArrowRight className="w-4 h-4" />
               </Button>
-              <Link href="/chat">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full px-8 gap-2 text-base bg-transparent"
-                >
-                  <Play className="w-4 h-4" />
-                  Talk to Agent
-                </Button>
-              </Link>
+              <SignedOut>
+                <SignInButton>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="rounded-full px-8 gap-2 text-base bg-transparent"
+                  >
+                    <Play className="w-4 h-4" />
+                    Talk to Agent
+                  </Button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <Link href="/chat">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="rounded-full px-8 gap-2 text-base bg-transparent"
+                  >
+                    <Play className="w-4 h-4" />
+                    Talk to Agent
+                  </Button>
+                </Link>
+              </SignedIn>
             </div>
 
             {/* Stats */}

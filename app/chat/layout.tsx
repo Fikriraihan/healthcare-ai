@@ -38,9 +38,9 @@ export default function ChatLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <div className="flex flex-col h-dvh bg-background">
       <RileyHeader />
-      {children}
-    </>
+      <main className="flex-1 overflow-hidden">{children}</main>
+    </div>
   );
 }

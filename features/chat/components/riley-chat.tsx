@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ChatMode } from "./chat-mode";
 import { VoiceMode } from "./voice-mode";
 import { ModeToggle } from "./mode-toggle";
-import { RileyHeader } from "./riley-header";
+
 import { UIMessage } from "ai";
 
 export type Message = {
@@ -118,7 +118,7 @@ export function RileyChat({
   };
 
   return (
-    <div className="flex flex-col h-[810px] max-w-2xl mx-auto">
+    <div className="flex flex-col h-full max-w-2xl mx-auto">
       <ModeToggle mode={mode} onModeChange={setMode} />
 
       <div className="flex-1 overflow-hidden">

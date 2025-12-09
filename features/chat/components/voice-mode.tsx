@@ -124,32 +124,32 @@ export function VoiceMode({
   return (
     <div className="flex flex-col h-full py-8 px-4 gap-6">
       {/* Grid layout for voice section and messages */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 overflow-hidden">
+      <div className="flex flex-col md:grid md:grid-cols-2 gap-6 flex-1 overflow-hidden">
         {/* Voice Section - Left */}
-        <div className="flex flex-col items-center justify-center gap-8 p-6 rounded-2xl border-2 border-border bg-card/50">
-          <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col shrink-0 items-center justify-center gap-4 p-4 md:gap-8 md:p-6 rounded-2xl border-2 border-border bg-card/50">
+          <div className="flex flex-col items-center gap-2 md:gap-3">
             <div className="relative">
-              <div className="w-32 h-32 rounded-full bg-primary/20 flex items-center justify-center ring-4 ring-primary/10">
-                <Heart className="w-16 h-16 text-primary" />
+              <div className="w-20 h-20 md:w-32 md:h-32 rounded-full bg-primary/20 flex items-center justify-center ring-4 ring-primary/10">
+                <Heart className="w-10 h-10 md:w-16 md:h-16 text-primary" />
               </div>
               {voiceStatus === "speaking" && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] md:text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 md:px-3 md:py-1 rounded-full border border-primary/20">
                   Speaking
                 </span>
               )}
             </div>
-            <h2 className="text-2xl font-semibold text-foreground">Riley</h2>
-            <p className="text-sm text-muted-foreground text-center max-w-xs">
+            <h2 className="text-xl md:text-2xl font-semibold text-foreground">Riley</h2>
+            <p className="text-xs md:text-sm text-muted-foreground text-center max-w-xs">
               Your friendly medical appointment assistant
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-4 md:gap-6">
             <button
               onClick={toggleMicrophone}
               disabled={callStatus !== CallStatus.ACTIVE}
               className={cn(
-                "relative w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg",
+                "relative w-20 h-20 md:w-32 md:h-32 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg",
                 voiceStatus === "listening"
                   ? "bg-primary text-primary-foreground scale-110 shadow-primary/50"
                   : voiceStatus === "processing"
@@ -160,19 +160,19 @@ export function VoiceMode({
               )}
             >
               {isMuted ? (
-                <MicOff className="w-12 h-12" />
+                <MicOff className="w-8 h-8 md:w-12 md:h-12" />
               ) : (
-                <Mic className="w-12 h-12" />
+                <Mic className="w-8 h-8 md:w-12 md:h-12" />
               )}
             </button>
-            <p className="text-base font-medium text-muted-foreground">
+            <p className="text-sm md:text-base font-medium text-muted-foreground">
               {getStatusText()}
             </p>
           </div>
         </div>
 
         {/* Message Section - Right */}
-        <div className="flex flex-col h-full rounded-2xl border-2 border-border bg-card/50 overflow-hidden">
+        <div className="flex flex-col flex-1 min-h-0 md:h-full rounded-2xl border-2 border-border bg-card/50 overflow-hidden">
           <div className="px-4 py-3 border-b border-border bg-muted/30">
             <h3 className="text-sm font-semibold text-foreground">
               Conversation Transcript
