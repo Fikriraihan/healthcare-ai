@@ -51,12 +51,19 @@ export function Header() {
               </SignInButton>
             </SignedOut>
 
-            <Link href="/chat">
-              <Button variant="outline" className="rounded-full px-6">
-                Chat with Riley
-              </Button>
-            </Link>
+            <SignedOut>
+              <SignInButton>
+                <Button variant="outline" className="rounded-full px-6">
+                  Chat with Riley
+                </Button>
+              </SignInButton>
+            </SignedOut>
             <SignedIn>
+              <Link href="/chat">
+                <Button variant="outline" className="rounded-full px-6">
+                  Chat with Riley
+                </Button>
+              </Link>
               <UserButton />
             </SignedIn>
           </div>

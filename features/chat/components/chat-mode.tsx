@@ -80,7 +80,7 @@ export function ChatMode({
         {appointment && <AppointmentCard appointment={appointment} />} */}
       </div>
 
-      <div className="sticky bottom-0 bg-card border-t border-border px-4 py-3 space-y-3">
+      <div className="sticky bottom-0 border rounded-lg border-border px-4 py-3 space-y-3">
         <QuickActions onAction={onQuickAction} />
         <ChatInput
           handleSubmit={handleSubmit}

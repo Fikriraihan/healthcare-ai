@@ -1,12 +1,6 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import "./globals.css";
 import { Header } from "@/components/header";
-import Provider from "./provider";
-
-const _inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Wellness Partners | Multi-Specialty Health Clinic",
@@ -37,19 +31,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans antialiased`}>
-        <Provider>
-          {children}
-          <Analytics />
-        </Provider>
-      </body>
-    </html>
+    <>
+      <Header />
+      {children}
+    </>
   );
 }

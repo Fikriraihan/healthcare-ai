@@ -1,26 +1,5 @@
-import { HeroSection } from "@/features/home/components/hero-section";
-import { AboutSection } from "@/features/home/components/about-section";
-import { ServicesSection } from "@/features/home/components/services-section";
-import { DoctorsSection } from "@/features/home/components/doctors-section";
-import { TestimonialsSection } from "@/features/home/components/testimonials-section";
-import { CTASection } from "@/features/home/components/cta-section";
-import { Footer } from "@/features/home/components/footer";
-import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const { userId } = await auth();
-
-  return (
-    <div className="min-h-screen">
-      <main>
-        <HeroSection />
-        <AboutSection />
-        <ServicesSection />
-        <DoctorsSection />
-        <TestimonialsSection />
-        <CTASection />
-      </main>
-      <Footer />
-    </div>
-  );
+  redirect("/home");
 }

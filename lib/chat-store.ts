@@ -4,8 +4,7 @@ import { writeFile, readFile } from "fs/promises";
 import path from "path";
 
 export async function createChat(): Promise<string> {
-  const id = generateId(); // generate a unique chat ID
-  await writeFile(getChatFile(id), "[]"); // create an empty chat file
+  const id = generateId();
   return id;
 }
 

@@ -53,7 +53,6 @@ export function RileyChat({
     };
     setMessages((prev) => [...prev, userMessage]);
 
-    // Simulate Riley's response
     setTimeout(() => {
       const responses = getResponse(content.toLowerCase());
       const assistantMessage: Message = {
@@ -119,8 +118,7 @@ export function RileyChat({
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-2xl mx-auto">
-      <RileyHeader />
+    <div className="flex flex-col h-[810px] max-w-2xl mx-auto">
       <ModeToggle mode={mode} onModeChange={setMode} />
 
       <div className="flex-1 overflow-hidden">
