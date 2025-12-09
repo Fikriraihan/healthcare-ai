@@ -81,7 +81,7 @@ export function ChatMode({
       </div>
 
       <div className="sticky bottom-0 border rounded-lg border-border px-4 py-3 space-y-3">
-        <QuickActions onAction={onQuickAction} />
+        {/* <QuickActions onAction={onQuickAction} /> */}
         <ChatInput
           handleSubmit={handleSubmit}
           input={input}
