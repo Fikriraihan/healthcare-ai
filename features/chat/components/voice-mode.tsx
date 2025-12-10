@@ -124,7 +124,7 @@ export function VoiceMode({
   return (
     <div className="flex flex-col h-full py-8 px-4 gap-6">
       {/* Grid layout for voice section and messages */}
-      <div className="flex flex-col md:grid md:grid-cols-2 gap-6 flex-1 overflow-hidden">
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-6 flex-1 overflow-y-auto md:overflow-hidden">
         {/* Voice Section - Left */}
         <div className="flex flex-col shrink-0 items-center justify-center gap-4 p-4 md:gap-8 md:p-6 rounded-2xl border-2 border-border bg-card/50">
           <div className="flex flex-col items-center gap-2 md:gap-3">
@@ -172,7 +172,7 @@ export function VoiceMode({
         </div>
 
         {/* Message Section - Right */}
-        <div className="flex flex-col flex-1 min-h-0 md:h-full rounded-2xl border-2 border-border bg-card/50 overflow-hidden">
+        <div className="flex flex-col flex-1 min-h-[300px] md:min-h-0 md:h-full rounded-2xl border-2 border-border bg-card/50 overflow-hidden">
           <div className="px-4 py-3 border-b border-border bg-muted/30">
             <h3 className="text-sm font-semibold text-foreground">
               Conversation Transcript
