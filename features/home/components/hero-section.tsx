@@ -32,10 +32,19 @@ export function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="rounded-full px-8 gap-2 text-base">
-                Book an Appointment
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              <SignedIn>
+                <Button size="lg" className="rounded-full px-8 gap-2 text-base">
+                  Book an Appointment
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </SignedIn>
+              <SignedOut>
+                <SignInButton>
+                  <Button className="rounded-full px-6">
+                    Book Appointment
+                  </Button>
+                </SignInButton>
+              </SignedOut>
               {/* <SignedOut>
                 <SignInButton>
                   <Button
