@@ -5,7 +5,6 @@ import { DoctorsSection } from "@/features/home/components/doctors-section";
 import { TestimonialsSection } from "@/features/home/components/testimonials-section";
 import { CTASection } from "@/features/home/components/cta-section";
 import { Footer } from "@/features/home/components/footer";
-import { auth } from "@clerk/nextjs/server";
 
 export default async function Home() {
   return (
