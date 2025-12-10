@@ -45,7 +45,7 @@ export function HeroSection() {
                   </Button>
                 </SignInButton>
               </SignedOut>
-              {/* <SignedOut>
+              <SignedOut>
                 <SignInButton>
                   <Button
                     size="lg"
@@ -56,19 +56,19 @@ export function HeroSection() {
                     Talk to Agent
                   </Button>
                 </SignInButton>
-              </SignedOut> */}
-              {/* <SignedIn> */}
-              <Link href="/chat">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full px-8 gap-2 text-base bg-transparent"
-                >
-                  <Play className="w-4 h-4" />
-                  Talk to Agent
-                </Button>
-              </Link>
-              {/* </SignedIn> */}
+              </SignedOut>
+              <SignedIn>
+                <Link href="/chat">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="rounded-full px-8 gap-2 text-base bg-transparent"
+                  >
+                    <Play className="w-4 h-4" />
+                    Talk to Agent
+                  </Button>
+                </Link>
+              </SignedIn>
             </div>
 
             {/* Stats */}
