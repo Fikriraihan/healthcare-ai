@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import type { Appointment } from "./riley-chat";
 import { ChatMessage } from "./chat-message";
 import { ChatInput } from "./chat-input";
@@ -28,9 +29,13 @@ export function ChatMode({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
 
+  const router = useRouter();
   const { messages, sendMessage } = useChat({
     id: id,
     messages: initialMessages,
+    onFinish: () => {
+      router.refresh();
+    },
     transport: new DefaultChatTransport({
       api: "/api/chat",
       prepareSendMessagesRequest({ messages, id }) {

@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@clerk/nextjs/server";
 import { createSupabaseClient } from "../supabase";
 
 export const createChat = async () => {
@@ -25,4 +26,17 @@ export const getMessages = async (id: string) => {
     .order("created_at", { ascending: true });
   if (error) console.error("FR: Supabase select error:", error);
   return data;
+};
+
+export const getHistoryList = async () => {
+  const { userId } = await auth();
+  const supabase = createSupabaseClient();
+
+  const { data: conversations, error } = await supabase
+    .from("conversations")
+    .select("*")
+    .eq("user_id", userId);
+
+  if (error) console.error("FR: Supabase error:", error);
+  return conversations;
 };
