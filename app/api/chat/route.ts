@@ -3,6 +3,7 @@ import {
   UIMessage,
   convertToModelMessages,
   createIdGenerator,
+  generateText,
 } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { createSupabaseClient } from "@/lib/supabase";
@@ -173,6 +174,36 @@ export async function POST(req: Request) {
 
         if (error) {
           console.error("Error saving messages:", error);
+        }
+
+        try {
+          const { data: conversation } = await supabase
+            .from("conversations")
+            .select("title")
+            .eq("id", id)
+            .single();
+
+          if (conversation && conversation.title === "New Conversation") {
+            const { text: title } = await generateText({
+              model: openai("gpt-4o-mini"),
+              system: `You are a helpful assistant. Generate a short, concise title (max 5 words) for the following conversation.
+The title should summarize the user's intent.
+Rules:
+1. If the conversation is just greetings (e.g. "hi", "hello"), asking "how are you", or lacks a clear specific topic/request from the user, you MUST return "New Conversation".
+2. If the user has a specific intent (e.g. "book appointment", "cancel", "hours"), generate a relevant title.
+3. Do not use quotes.`,
+              messages: convertToModelMessages(messages),
+            });
+
+            if (title && title !== "New Conversation") {
+              await supabase
+                .from("conversations")
+                .update({ title })
+                .eq("id", id);
+            }
+          }
+        } catch (error) {
+          console.error("Error generating title:", error);
         }
       },
     });

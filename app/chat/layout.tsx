@@ -1,6 +1,7 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
 import { RileyHeader } from "@/features/chat/components/riley-header";
+import ChatHistory from "@/features/chat/containers/chat-history";
 
 export const metadata: Metadata = {
   title: "Wellness Partners | Multi-Specialty Health Clinic",
@@ -38,9 +39,14 @@ export default function ChatLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col h-dvh bg-background">
-      <RileyHeader />
-      <main className="flex-1 overflow-hidden">{children}</main>
+    <div className="flex h-dvh bg-background overflow-hidden">
+      <aside className="hidden md:block w-80 shrink-0 h-full">
+        <ChatHistory />
+      </aside>
+      <div className="flex flex-col flex-1 min-w-0 h-full">
+        <RileyHeader />
+        <main className="flex-1 overflow-hidden relative">{children}</main>
+      </div>
     </div>
   );
 }
