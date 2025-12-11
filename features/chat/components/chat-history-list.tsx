@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  MessageSquare,
-  Plus,
-  MoreHorizontal,
-  Trash2,
-  Archive,
-} from "lucide-react";
+import { MessageSquare, Plus, MoreHorizontal, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -17,12 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  redirect,
-  useParams,
-  useSearchParams,
-  useRouter,
-} from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useDeleteConversation } from "../hooks/useDeleteConversation";
 import { toast } from "sonner";
 
@@ -32,39 +21,6 @@ type ChatHistoryItem = {
   date: string;
   preview: string;
 };
-
-// const DUMMY_HISTORY: ChatHistoryItem[] = [
-//   {
-//     id: "1",
-//     title: "Appointment with Dr. Chen",
-//     date: "Today",
-//     preview: "I need to schedule a check-up...",
-//   },
-//   {
-//     id: "2",
-//     title: "General Inquiry",
-//     date: "Yesterday",
-//     preview: "What are your opening hours?",
-//   },
-//   {
-//     id: "3",
-//     title: "Reschedule Appointment",
-//     date: "Dec 10",
-//     preview: "Can I move my appointment to...",
-//   },
-//   {
-//     id: "4",
-//     title: "Insurance Question",
-//     date: "Dec 08",
-//     preview: "Do you accept Blue Cross?",
-//   },
-//   {
-//     id: "5",
-//     title: "Lab Results",
-//     date: "Dec 05",
-//     preview: "When will my blood test results...",
-//   },
-// ];
 
 export function ChatHistoryList({
   className,
@@ -156,15 +112,11 @@ export function ChatHistoryList({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                      <Archive className="mr-2 w-4 h-4" />
-                      Archive
-                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={(e) => handleDeleteConversation(e, chat.id)}
                       className="text-destructive focus:text-destructive"
                     >
-                      <Trash2 className="mr-2 w-4 h-4" />
+                      <Trash2 className="mr-2 w-4 h-4 text-destructive" />
                       Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
