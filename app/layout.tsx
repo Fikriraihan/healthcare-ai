@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import { Header } from "@/components/header";
 import Provider from "./provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const _inter = Inter({ subsets: ["latin"] });
 
@@ -48,6 +48,7 @@ export default function RootLayout({
         <Provider>
           {children}
           <Analytics />
+          <Toaster />
         </Provider>
       </body>
     </html>
