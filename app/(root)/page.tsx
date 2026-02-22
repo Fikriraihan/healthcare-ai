@@ -5,8 +5,16 @@ import { DoctorsSection } from "@/features/home/components/doctors-section";
 import { TestimonialsSection } from "@/features/home/components/testimonials-section";
 import { CTASection } from "@/features/home/components/cta-section";
 import { Footer } from "@/features/home/components/footer";
+import { createSupabaseClient } from "@/lib/supabase";
 
 export default async function Home() {
+  const supabase = createSupabaseClient();
+
+  const { data } = supabase.storage
+    .from("Demo") // nama bucket
+    .getPublicUrl("Asynchronous Commits Postgres.pdf");
+
+  console.log(data.publicUrl);
   return (
     <div className="min-h-screen">
       <main>

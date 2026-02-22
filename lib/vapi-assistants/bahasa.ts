@@ -113,8 +113,12 @@ export const bahasaAssistant: CreateAssistantDTO = {
         content: SYSTEM_PROMPT,
       },
     ],
+    toolIds: [
+      "093638e9-8218-4238-aa5e-6d4e40bcd598",
+      "ea353229-447f-4583-844b-eab4a697d645",
+    ],
   },
   clientMessages: undefined,
   serverMessages: undefined,
-  maxDurationSeconds: 180,
+  // maxDurationSeconds: 180,
 };
